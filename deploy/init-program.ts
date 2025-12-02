@@ -54,10 +54,18 @@ async function main() {
   await sails.parseIdl(idlContent);
 
   const initPayload = sails.ctors.New.encodePayload();
+  console.log('Init payload:', '0x' + Buffer.from(initPayload).toString('hex'));
 
   const initTx = await mirror.sendMessage(initPayload, 0n);
   console.log('Sending init message...');
-  await initTx.sendAndWaitForReceipt();
+  await initTx.send();
+
+  console.log('Setting up reply listener...');
+  const { waitForReply } = await initTx.setupReplyListener();
+
+  console.log('Waiting for reply...');
+  const reply = await waitForReply();
+  console.log('Reply received:', reply);
 
   console.log('✓ Program initialized');
   console.log('Next: npm test');
