@@ -35,7 +35,6 @@ async function main() {
   console.log('Account:', account.address);
   console.log('Program:', PROGRAM_ID);
 
-  // Both clients need same transport type for getMirrorClient
   const transport = webSocket(ETH_RPC_WS);
 
   const publicClient = createPublicClient({

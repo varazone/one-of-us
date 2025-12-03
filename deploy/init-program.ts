@@ -35,7 +35,6 @@ async function main() {
   console.log('Account:', account.address);
 
   // Use WebSocket for subscriptions (reply listener)
-  // Both clients need same transport type for getMirrorClient
   const transport = webSocket(ETH_RPC_WS);
 
   const publicClient = createPublicClient({
