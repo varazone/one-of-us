@@ -10,6 +10,17 @@ cargo build --release
 
 Output: `target/wasm32-gear/release/one_of_us.opt.wasm`
 
+## Generate Solidity Interface (Optional)
+
+If you need to interact with your program from Solidity contracts or use Ethereum ABI tooling:
+
+```bash
+# Generate Solidity interface from IDL
+cargo sails sol --idl-path ./target/wasm32-gear/release/one_of_us.idl
+```
+
+Output: `OneOfUs.sol` — contains interface, ABI contract, and callback definitions.
+
 ## Setup
 
 ```bash
@@ -51,11 +62,26 @@ npm run upload
 
 ### 2. Create Program
 
+**Option A: Standard creation**
+
 ```bash
 npm run create
 ```
 
 → Get `PROGRAM_ID`, add to `.env`
+
+**Option B: With Solidity ABI interface**
+
+```bash
+# First, generate and compile Solidity interface
+cargo sails sol --idl-path ./target/wasm32-gear/release/one_of_us.idl
+cd deploy && npm run compile:sol
+
+# Then create program with ABI
+npm run create:abi
+```
+
+→ Get `PROGRAM_ID` and `ABI_ADDRESS`, add to `.env`
 
 ### 3. Fund Program
 
@@ -95,13 +121,15 @@ npm run state
 
 ## Scripts
 
-| Script              | Command            | Description                 |
-| ------------------- | ------------------ | --------------------------- |
-| `upload-code.ts`    | `npm run upload`   | Upload WASM to Ethereum     |
-| `create-program.ts` | `npm run create`   | Create program instance     |
-| `fund-program.ts`   | `npm run fund`     | Top up wVARA balance        |
-| `init-program.ts`   | `npm run init`     | Initialize program          |
-| `classic-tx.ts`     | `npm run classic`  | Send classic L1 transaction |
-| `test-injected.ts`  | `npm run injected` | Send injected transaction   |
-| `read-state.ts`     | `npm run state`    | Query program state         |
+| Script                  | Command               | Description                       |
+| ----------------------- | --------------------- | --------------------------------- |
+| `upload-code.ts`        | `npm run upload`      | Upload WASM to Ethereum           |
+| `create-program.ts`     | `npm run create`      | Create program instance           |
+| `compile-sol.ts`        | `npm run compile:sol` | Compile Solidity → TypeScript ABI |
+| `create-program-abi.ts` | `npm run create:abi`  | Create program with Solidity ABI  |
+| `fund-program.ts`       | `npm run fund`        | Top up wVARA balance              |
+| `init-program.ts`       | `npm run init`        | Initialize program                |
+| `classic-tx.ts`         | `npm run classic`     | Send classic L1 transaction       |
+| `test-injected.ts`      | `npm run injected`    | Send injected transaction         |
+| `read-state.ts`         | `npm run state`       | Query program state               |
 
