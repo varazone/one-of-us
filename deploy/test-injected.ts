@@ -6,11 +6,7 @@ import {
   defineChain,
 } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
-import {
-  EthereumClient,
-  VaraEthApi,
-  WsVaraEthProvider,
-} from '@vara-eth/api';
+import { EthereumClient, VaraEthApi, WsVaraEthProvider } from '@vara-eth/api';
 import { Sails } from 'sails-js';
 import { SailsIdlParser } from 'sails-js-parser';
 import {
@@ -40,9 +36,13 @@ async function main() {
     chain,
     transport: http(ETH_RPC),
   });
-  
+
   // v0.0.2: EthereumClient now takes routerAddress
-  const ethereumClient = new EthereumClient(publicClient, walletClient, ROUTER_ADDRESS);
+  const ethereumClient = new EthereumClient(
+    publicClient,
+    walletClient,
+    ROUTER_ADDRESS
+  );
   await ethereumClient.isInitialized;
 
   console.log('Account:', account.address);

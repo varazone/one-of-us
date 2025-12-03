@@ -649,7 +649,7 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
         data-lang="typescript"
       ><code><span class="keyword">import</span> { createPublicClient, createWalletClient, http, defineChain } <span class="keyword">from</span> <span class="string">'viem'</span>;
 <span class="keyword">import</span> { privateKeyToAccount } <span class="keyword">from</span> <span class="string">'viem/accounts'</span>;
-<span class="keyword">import</span> { EthereumClient, getRouterClient } <span class="keyword">from</span> <span class="string">'@vara-eth/api'</span>;
+<span class="keyword">import</span> { EthereumClient } <span class="keyword">from</span> <span class="string">'@vara-eth/api'</span>;
 
 <span class="keyword">const</span> hoodi = <span class="function">defineChain</span>({
   <span class="property">id</span>: <span class="number">560048</span>,
@@ -666,9 +666,10 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
   <span class="keyword">const</span> publicClient = <span class="function">createPublicClient</span>({ <span class="property">chain</span>: hoodi, <span class="property">transport</span>: <span class="function">http</span>(ETH_RPC) });
   <span class="keyword">const</span> walletClient = <span class="function">createWalletClient</span>({ account, <span class="property">chain</span>: hoodi, <span class="property">transport</span>: <span class="function">http</span>(ETH_RPC) });
 
-  <span class="comment">// Setup Vara.eth clients</span>
-  <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient);
-  <span class="keyword">const</span> router = <span class="function">getRouterClient</span>(ROUTER_ADDRESS, ethereumClient);
+  <span class="comment">// Setup Vara.eth client</span>
+  <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient, ROUTER_ADDRESS);
+  <span class="keyword">await</span> ethereumClient.isInitialized;
+  <span class="keyword">const</span> router = ethereumClient.router;
 
   <span class="comment">// Create program instance</span>
   <span class="keyword">const</span> tx = <span class="keyword">await</span> router.<span class="function">createProgram</span>(CODE_ID);
@@ -711,11 +712,14 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
 
       <pre
         data-lang="typescript"
-      ><code><span class="keyword">import</span> { EthereumClient, getRouterClient } <span class="keyword">from</span> <span class="string">'@vara-eth/api'</span>;
+      ><code><span class="keyword">import</span> { EthereumClient } <span class="keyword">from</span> <span class="string">'@vara-eth/api'</span>;
 <span class="keyword">import</span> { oneOfUsAbi, oneOfUsBytecode } <span class="keyword">from</span> <span class="string">'./OneOfUsAbi'</span>;
 
 <span class="keyword">async function</span> <span class="function">main</span>() {
   <span class="comment">// ... setup clients ...</span>
+  <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient, ROUTER_ADDRESS);
+  <span class="keyword">await</span> ethereumClient.isInitialized;
+  <span class="keyword">const</span> router = ethereumClient.router;
 
   <span class="comment">// Step 1: Deploy Solidity ABI contract</span>
   <span class="keyword">const</span> deployHash = <span class="keyword">await</span> walletClient.<span class="function">deployContract</span>({
@@ -784,11 +788,12 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
 
       <pre
         data-lang="typescript"
-      ><code><span class="keyword">import</span> { EthereumClient, getMirrorClient, getWrappedVaraClient } <span class="keyword">from</span> <span class="string">'@vara-eth/api'</span>;
+      ><code><span class="keyword">import</span> { EthereumClient, getMirrorClient } <span class="keyword">from</span> <span class="string">'@vara-eth/api'</span>;
 
 <span class="keyword">async function</span> <span class="function">main</span>() {
-  <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient);
-  <span class="keyword">const</span> wvara = <span class="function">getWrappedVaraClient</span>(WVARA_ADDRESS, ethereumClient);
+  <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient, ROUTER_ADDRESS);
+  <span class="keyword">await</span> ethereumClient.isInitialized;
+  <span class="keyword">const</span> wvara = ethereumClient.wvara;
   <span class="keyword">const</span> mirror = <span class="function">getMirrorClient</span>(PROGRAM_ID, ethereumClient);
 
   <span class="keyword">const</span> amount = <span class="function">BigInt</span>(<span class="number">10_000_000_000_000</span>); <span class="comment">// 10 wVARA</span>
@@ -859,7 +864,8 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
 <span class="keyword">import</span> { SailsIdlParser } <span class="keyword">from</span> <span class="string">'sails-js-parser'</span>;
 
 <span class="keyword">async function</span> <span class="function">main</span>() {
-  <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient);
+  <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient, ROUTER_ADDRESS);
+  <span class="keyword">await</span> ethereumClient.isInitialized;
   <span class="keyword">const</span> mirror = <span class="function">getMirrorClient</span>(PROGRAM_ID, ethereumClient);
 
   <span class="comment">// Initialize Sails from your program IDL</span>
@@ -926,34 +932,27 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
         Full @vara-eth/api documentation
       </a>
 
-      <pre data-lang="typescript"><code><span class="keyword">import</span> {
-  EthereumClient,
-  VaraEthApi,
-  WsVaraEthProvider,
-  InjectedTransaction,
-} <span class="keyword">from</span> <span class="string">'@vara-eth/api'</span>;
+      <pre data-lang="typescript"><code><span class="keyword">import</span> { EthereumClient, VaraEthApi, WsVaraEthProvider } <span class="keyword">from</span> <span class="string">'@vara-eth/api'</span>;
 
 <span class="keyword">async function</span> <span class="function">main</span>() {
-  <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient);
+  <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient, ROUTER_ADDRESS);
+  <span class="keyword">await</span> ethereumClient.isInitialized;
 
   <span class="comment">// Connect to Vara.eth network via WebSocket</span>
   <span class="keyword">const</span> api = <span class="keyword">new</span> <span class="type">VaraEthApi</span>(
     <span class="keyword">new</span> <span class="type">WsVaraEthProvider</span>(VARA_ETH_WS),
-    ethereumClient,
-    ROUTER_ADDRESS
+    ethereumClient
   );
 
   <span class="comment">// Encode the call</span>
   <span class="keyword">const</span> payload = sails.services.OneOfUs.functions.JoinUs.<span class="function">encodePayload</span>();
 
   <span class="comment">// Build an injected tx (off-chain pre-confirmation path)</span>
-  <span class="keyword">const</span> injected = <span class="keyword">await</span> api.<span class="function">createInjectedTransaction</span>(
-    <span class="keyword">new</span> <span class="type">InjectedTransaction</span>({
-      <span class="property">destination</span>: PROGRAM_ID,
-      <span class="property">payload</span>: payload,
-      <span class="property">value</span>: <span class="number">0n</span>,
-    })
-  );
+  <span class="keyword">const</span> injected = <span class="keyword">await</span> api.<span class="function">createInjectedTransaction</span>({
+    <span class="property">destination</span>: PROGRAM_ID,
+    <span class="property">payload</span>: payload,
+    <span class="property">value</span>: <span class="number">0n</span>,
+  });
 
   <span class="comment">// Wait for full transaction promise (includes reply)</span>
   <span class="keyword">const</span> result = <span class="keyword">await</span> injected.<span class="function">sendAndWaitForPromise</span>();
@@ -1010,16 +1009,17 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
 
       <pre
         data-lang="typescript"
-      ><code><span class="keyword">import</span> { VaraEthApi, WsVaraEthProvider, getMirrorClient } <span class="keyword">from</span> <span class="string">'@vara-eth/api'</span>;
+      ><code><span class="keyword">import</span> { EthereumClient, VaraEthApi, WsVaraEthProvider, getMirrorClient } <span class="keyword">from</span> <span class="string">'@vara-eth/api'</span>;
 
 <span class="keyword">async function</span> <span class="function">main</span>() {
+  <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient, ROUTER_ADDRESS);
+  <span class="keyword">await</span> ethereumClient.isInitialized;
   <span class="keyword">const</span> mirror = <span class="function">getMirrorClient</span>(PROGRAM_ID, ethereumClient);
 
   <span class="comment">// Connect to Vara.eth API</span>
   <span class="keyword">const</span> api = <span class="keyword">new</span> <span class="type">VaraEthApi</span>(
     <span class="keyword">new</span> <span class="type">WsVaraEthProvider</span>(VARA_ETH_WS),
-    ethereumClient,
-    ROUTER_ADDRESS
+    ethereumClient
   );
 
   <span class="comment">// Get the current state hash from Ethereum (Mirror contract)</span>

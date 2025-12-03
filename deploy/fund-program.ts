@@ -44,7 +44,11 @@ async function main() {
   });
 
   // v0.0.2: EthereumClient now takes routerAddress and provides wvara client
-  const ethereumClient = new EthereumClient(publicClient, walletClient, ROUTER_ADDRESS);
+  const ethereumClient = new EthereumClient(
+    publicClient,
+    walletClient,
+    ROUTER_ADDRESS
+  );
   await ethereumClient.isInitialized;
   const wvara = ethereumClient.wvara;
   const mirror = getMirrorClient(PROGRAM_ID, ethereumClient);
