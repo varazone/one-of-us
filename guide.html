@@ -450,11 +450,6 @@
     <!-- Introduction -->
     <section id="intro">
       <h2>Introduction</h2>
-
-      <p>
-        <strong>Be One of Us. Let's make Ethereum run real programs.</strong>
-      </p>
-
       <p>
         In this guide, we'll dive into the process of deploying and running actual WASM programs on Ethereum through
         Vara.eth. The idea is straightforward: you write your program in Rust, compile it to WASM, and then execute it
@@ -462,16 +457,16 @@
         Layer 2, no new chains, no liquidity fragmentation, and no extra trust assumptions. Just Ethereum's security
         model and liquidity, with a compute layer that finally lets your app breathe.
       </p>
+      <div class="callout callout-info">
+        <p>
+            Vara.eth also brings a new execution feel to L1 apps: alongside canonical Ethereum finality, programs can return
+            <strong>pre-confirmations</strong> — fast, cryptographically backed acknowledgements from executors that arrive
+            in near real time. That means your users can experience Web2-like responsiveness while still ending up with
+            Ethereum-level settlement security (which opens up a whole new space of application designs that simply weren't
+            practical on sequential L1 execution).
+          </p>
+      </div>
 
-      <p>
-        Vara.eth also brings a new execution feel to L1 apps: alongside canonical Ethereum finality, programs can return
-        <strong>pre-confirmations</strong> — fast, cryptographically backed acknowledgements from executors that arrive
-        in near real time. That means your users can experience Web2-like responsiveness while still ending up with
-        Ethereum-level settlement security (which opens up a whole new space of application designs that simply weren't
-        practical on sequential L1 execution).
-      </p>
-
-      <p>
         This guide is for developers who want to build Ethereum-native applications but need more than sequential
         smart-contract execution can realistically offer. We'll stay practical from the first step. You'll take a real
         Gear program, upload and validate its WASM on Ethereum, create a program instance, and then interact with it
@@ -484,14 +479,7 @@
         and finalization work, and a template you can reuse to ship your own high-performance apps without leaving L1.
       </p>
 
-      <div class="callout callout-info">
-        <div class="callout-title">Pre-confirmations</div>
-        <p>
-          Vara.eth brings a new execution feel to L1 apps: alongside canonical Ethereum finality, programs can return
-          <strong>pre-confirmations</strong> — fast, cryptographically backed acknowledgements from executors that
-          arrive in near real time. Web2-like responsiveness with Ethereum-level settlement security.
-        </p>
-      </div>
+      
 
       <h3>Resources</h3>
       <div class="resources-grid">
@@ -583,7 +571,7 @@
       </ul>
 
       <div class="callout callout-info">
-        <div class="callout-title">ℹ When do you need this?</div>
+        <div class="callout-title">When do you need this?</div>
         <p>
           You only need the Solidity interface if you want to call your Vara.eth program from other smart contracts or
           prefer using Ethereum ABI tooling. For direct interaction via TypeScript/JavaScript, you can use the sails-js
@@ -619,7 +607,7 @@ cargo build -p ethexe-cli -r</code></pre>
 
       <h3>Upload the WASM</h3>
       <pre data-lang="bash"><code>./target/release/ethexe --cfg none tx \
-  --ethereum-rpc <span class="string">"https://hoodi-reth-rpc.gear-tech.io"</span> \
+  --ethereum-rpc <span class="string">"wss://hoodi-reth-rpc.gear-tech.io/ws"</span> \
   --ethereum-router <span class="string">"0x579D6098197517140e5aec47c78d6f7181916dd6"</span> \
   --sender <span class="string">"$SENDER_ADDRESS"</span> \
   upload target/wasm32-gear/release/one_of_us.opt.wasm -w</code></pre>
@@ -715,8 +703,29 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
       <pre data-lang="bash"><code>cargo sails sol --idl-path ./target/wasm32-gear/release/your_program.idl</code></pre>
 
       <p>
-        This generates a <code>.sol</code> file with the interface, ABI contract, and callback definitions. Deploy the
-        ABI contract and use its address when creating the program:
+        This generates a <code>.sol</code> file with the interface, ABI contract, and callback definitions. Next, compile
+        the Solidity file to generate TypeScript ABI:
+      </p>
+
+      <a
+        href="https://github.com/gear-foundation/one-of-us/blob/master/deploy/compile-sol.ts"
+        target="_blank"
+        class="script-link"
+      >
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+          />
+        </svg>
+        View full script: compile-sol.ts
+      </a>
+
+      <pre data-lang="bash"><code>npm run compile:sol</code></pre>
+
+      <p>
+        This compiles the Solidity contract using <code>solc</code> and generates <code>OneOfUsAbi.ts</code> with the ABI
+        and bytecode that can be imported in TypeScript. Then deploy the ABI contract and use its address when creating
+        the program:
       </p>
 
       <a
