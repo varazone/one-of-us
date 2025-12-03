@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { createPublicClient, createWalletClient, http } from 'viem';
+import { createPublicClient, createWalletClient, http, webSocket } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { defineChain } from 'viem';
 import { EthereumClient, getMirrorClient } from '@vara-eth/api';
@@ -8,6 +8,7 @@ import { SailsIdlParser } from 'sails-js-parser';
 import {
   PRIVATE_KEY,
   ETH_RPC,
+  ETH_RPC_WS,
   PROGRAM_ID,
   HOODI_CHAIN_ID,
   IDL_PATH,
@@ -18,7 +19,7 @@ const hoodi = defineChain({
   name: 'Hoodi Testnet',
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   rpcUrls: {
-    default: { http: [ETH_RPC] },
+    default: { http: [ETH_RPC], webSocket: [ETH_RPC_WS] },
   },
 });
 
@@ -33,9 +34,10 @@ async function main() {
   console.log('Account:', account.address);
   console.log('Program:', PROGRAM_ID);
 
+  // Use WebSocket for subscriptions (reply listener)
   const publicClient = createPublicClient({
     chain: hoodi,
-    transport: http(ETH_RPC),
+    transport: webSocket(ETH_RPC_WS),
   });
 
   const walletClient = createWalletClient({

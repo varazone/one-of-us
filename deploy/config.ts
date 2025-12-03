@@ -7,6 +7,8 @@ export const RPC_URL = process.env.RPC_URL!;
 export const VARA_ETH_WS =
   process.env.VARA_ETH_WS || 'ws://vara-eth-validator-1.gear-tech.io:9944';
 export const ETH_RPC = process.env.ETH_RPC!;
+export const ETH_RPC_WS =
+  process.env.ETH_RPC_WS || 'wss://hoodi-reth-rpc.gear-tech.io/ws';
 export const CODE_ID = process.env.CODE_ID as `0x${string}` | undefined;
 export const PROGRAM_ID = process.env.PROGRAM_ID as `0x${string}` | undefined;
 

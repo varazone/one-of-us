@@ -36,7 +36,8 @@ Variables appear in order as you complete each step:
 ```bash
 # Initial setup (required)
 PRIVATE_KEY=0x...           # Your Ethereum private key
-ETH_RPC=https://...         # Ethereum RPC (Hoodi)
+ETH_RPC=https://...         # Ethereum HTTP RPC (Hoodi)
+ETH_RPC_WS=wss://...        # Ethereum WebSocket RPC (for subscriptions)
 ROUTER_ADDRESS=0x...        # Router contract
 WVARA_ADDRESS=0x...         # wVARA token contract
 VARA_ETH_WS=wss://...       # Vara.eth WebSocket (for injected tx)

@@ -544,16 +544,14 @@
       <h3>Generate Solidity Interface (Optional)</h3>
 
       <p>
-        If you want to interact with your Vara.eth program using Ethereum's native ABI encoding — for example, 
-        calling it from other Solidity contracts or using standard Ethereum tooling — you can generate a 
-        Solidity interface from your program's IDL.
+        If you want to interact with your Vara.eth program using Ethereum's native ABI encoding — for example, calling
+        it from other Solidity contracts or using standard Ethereum tooling — you can generate a Solidity interface from
+        your program's IDL.
       </p>
 
       <pre data-lang="bash"><code>cargo sails sol --idl-path ./target/wasm32-gear/release/one_of_us.idl</code></pre>
 
-      <p>
-        This generates an <code>OneOfUs.sol</code> file containing:
-      </p>
+      <p>This generates an <code>OneOfUs.sol</code> file containing:</p>
 
       <ul>
         <li><strong>IOneOfUs</strong> — interface with all your program's methods</li>
@@ -565,9 +563,9 @@
       <div class="callout callout-info">
         <div class="callout-title">ℹ When do you need this?</div>
         <p>
-          You only need the Solidity interface if you want to call your Vara.eth program from other smart contracts 
-          or prefer using Ethereum ABI tooling. For direct interaction via TypeScript/JavaScript, 
-          you can use the sails-js library with IDL instead.
+          You only need the Solidity interface if you want to call your Vara.eth program from other smart contracts or
+          prefer using Ethereum ABI tooling. For direct interaction via TypeScript/JavaScript, you can use the sails-js
+          library with IDL instead.
         </p>
       </div>
     </section>
