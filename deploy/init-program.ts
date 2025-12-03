@@ -53,7 +53,7 @@ async function main() {
   const sails = new Sails(parser);
   await sails.parseIdl(idlContent);
 
-  const initPayload = sails.ctors.New.encodePayload();
+  const initPayload = sails.ctors.Init.encodePayload();
   console.log('Init payload:', '0x' + Buffer.from(initPayload).toString('hex'));
 
   const initTx = await mirror.sendMessage(initPayload, 0n);
