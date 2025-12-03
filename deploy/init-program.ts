@@ -52,7 +52,7 @@ async function main() {
     ROUTER_ADDRESS
   );
   await ethereumClient.isInitialized;
-  const mirror = getMirrorClient(PROGRAM_ID, ethereumClient);
+  const mirror = getMirrorClient(PROGRAM_ID, walletClient, publicClient);
 
   console.log('\nInitializing program...');
 

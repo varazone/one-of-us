@@ -50,7 +50,7 @@ async function main() {
   );
   await ethereumClient.isInitialized;
   const wvara = ethereumClient.wvara;
-  const mirror = getMirrorClient(PROGRAM_ID, ethereumClient);
+  const mirror = getMirrorClient(PROGRAM_ID, walletClient, publicClient);
 
   const wvaraBalance = await wvara.balanceOf(account.address);
   console.log('wVARA balance:', wvaraBalance.toString());

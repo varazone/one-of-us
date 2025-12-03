@@ -53,7 +53,7 @@ async function main() {
     ROUTER_ADDRESS
   );
   await ethereumClient.isInitialized;
-  const mirror = getMirrorClient(PROGRAM_ID, ethereumClient);
+  const mirror = getMirrorClient(PROGRAM_ID, walletClient, publicClient);
 
   // Initialize Sails from program IDL
   const idlContent = readFileSync(IDL_PATH, 'utf-8');

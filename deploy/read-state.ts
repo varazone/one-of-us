@@ -61,7 +61,7 @@ async function main() {
     ROUTER_ADDRESS
   );
   await ethereumClient.isInitialized;
-  const mirror = getMirrorClient(PROGRAM_ID, ethereumClient);
+  const mirror = getMirrorClient(PROGRAM_ID, walletClient, publicClient);
 
   const api = new VaraEthApi(
     new WsVaraEthProvider(VARA_ETH_WS as `ws://${string}` | `wss://${string}`),

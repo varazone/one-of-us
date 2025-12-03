@@ -794,7 +794,7 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
   <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient, ROUTER_ADDRESS);
   <span class="keyword">await</span> ethereumClient.isInitialized;
   <span class="keyword">const</span> wvara = ethereumClient.wvara;
-  <span class="keyword">const</span> mirror = <span class="function">getMirrorClient</span>(PROGRAM_ID, ethereumClient);
+  <span class="keyword">const</span> mirror = <span class="function">getMirrorClient</span>(PROGRAM_ID, walletClient, publicClient);
 
   <span class="keyword">const</span> amount = <span class="function">BigInt</span>(<span class="number">10_000_000_000_000</span>); <span class="comment">// 10 wVARA</span>
 
@@ -866,7 +866,7 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
 <span class="keyword">async function</span> <span class="function">main</span>() {
   <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient, ROUTER_ADDRESS);
   <span class="keyword">await</span> ethereumClient.isInitialized;
-  <span class="keyword">const</span> mirror = <span class="function">getMirrorClient</span>(PROGRAM_ID, ethereumClient);
+  <span class="keyword">const</span> mirror = <span class="function">getMirrorClient</span>(PROGRAM_ID, walletClient, publicClient);
 
   <span class="comment">// Initialize Sails from your program IDL</span>
   <span class="keyword">const</span> parser = <span class="keyword">await</span> SailsIdlParser.<span class="function">new</span>();
@@ -1016,7 +1016,7 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
 <span class="keyword">async function</span> <span class="function">main</span>() {
   <span class="keyword">const</span> ethereumClient = <span class="keyword">new</span> <span class="type">EthereumClient</span>(publicClient, walletClient, ROUTER_ADDRESS);
   <span class="keyword">await</span> ethereumClient.isInitialized;
-  <span class="keyword">const</span> mirror = <span class="function">getMirrorClient</span>(PROGRAM_ID, ethereumClient);
+  <span class="keyword">const</span> mirror = <span class="function">getMirrorClient</span>(PROGRAM_ID, walletClient, publicClient);
 
   <span class="comment">// Connect to Vara.eth API</span>
   <span class="keyword">const</span> api = <span class="keyword">new</span> <span class="type">VaraEthApi</span>(
