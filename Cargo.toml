@@ -13,13 +13,13 @@ one-of-us-app = { path = "app" }
 
 [build-dependencies]
 one-of-us-app = { path = "app" }
-sails-rs = { version = "0.10.0", features = ["wasm-builder"] }
-sails-idl-gen = "0.10.0"
+sails-rs = { version = "0.10.1", features = ["wasm-builder"] }
+sails-idl-gen = "0.10.1"
 
 [dev-dependencies]
 one-of-us = { path = ".", features = ["wasm-binary"] }
 one-of-us-client = { path = "client" }
-sails-rs = { version = "0.10.0", features = ["gtest"] }
+sails-rs = { version = "0.10.1", features = ["gtest"] }
 tokio = { version = "1.41", features = ["rt", "macros"] }
 
 [features]

@@ -3,9 +3,7 @@
 use core::cell::{Ref, RefMut};
 use sails_rs::{cell::RefCell, collections::BTreeSet, gstd::msg, prelude::*};
 
-const PROGRAM_VERSION: u32 = 6;
-
-type EthAddress = [u16; 16];
+const PROGRAM_VERSION: u32 = 8;
 
 struct SyncRefCell<T>(RefCell<T>);
 unsafe impl<T> Sync for SyncRefCell<T> {}
@@ -15,8 +13,8 @@ static STATE: SyncRefCell<Option<OneOfUsState>> = SyncRefCell(RefCell::new(None)
 
 #[derive(Clone, Default)]
 pub struct OneOfUsState {
-    pub builders: Vec<EthAddress>,
-    pub registered: BTreeSet<EthAddress>,
+    pub builders: Vec<ActorId>,
+    pub registered: BTreeSet<ActorId>,
 }
 
 impl OneOfUsState {
@@ -37,14 +35,6 @@ impl OneOfUsState {
     }
 }
 
-fn actor_id_to_address(actor_id: [u8; 32]) -> EthAddress {
-    let mut addr = [0u16; 16];
-    for i in 0..16 {
-        addr[i] = u16::from_be_bytes([actor_id[i * 2], actor_id[i * 2 + 1]]);
-    }
-    addr
-}
-
 #[derive(Default)]
 pub struct OneOfUsService;
 
@@ -59,8 +49,7 @@ impl OneOfUsService {
 impl OneOfUsService {
     #[export]
     pub fn join_us(&mut self) -> bool {
-        let actor_id: [u8; 32] = msg::source().into();
-        let sender = actor_id_to_address(actor_id);
+        let sender = msg::source();
         let mut state = OneOfUsState::get_mut();
 
         if state.registered.contains(&sender) {
@@ -78,12 +67,12 @@ impl OneOfUsService {
     }
 
     #[export]
-    pub fn is_one_of_us(&self, addr: EthAddress) -> bool {
+    pub fn is_one_of_us(&self, addr: ActorId) -> bool {
         OneOfUsState::get().registered.contains(&addr)
     }
 
     #[export]
-    pub fn list(&self, page: u32, page_size: u32) -> Vec<EthAddress> {
+    pub fn list(&self, page: u32, page_size: u32) -> Vec<ActorId> {
         let state = OneOfUsState::get();
         let start = (page * page_size) as usize;
 

@@ -4,7 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-sails-rs = { version = "0.10.0", features = ["ethexe"] }
-gprimitives = { version = "1.10.0", default-features = false, features = ["ethexe"] }
+sails-rs = { version = "0.10.1", features = ["ethexe"] }
 parity-scale-codec = { version = "3", default-features = false }
 scale-info = { version = "2", default-features = false }

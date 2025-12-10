@@ -5,12 +5,12 @@ edition = "2024"
 
 [dependencies]
 mockall = { version = "0.12", optional = true }
-sails-rs = "0.10.0"
+sails-rs = "0.10.1"
 
 [build-dependencies]
 one-of-us-app = { path = "../app" }
-sails-client-gen = "0.10.0"
-sails-idl-gen = "0.10.0"
+sails-client-gen = "0.10.1"
+sails-idl-gen = "0.10.1"
 
 [features]
 mocks = ["sails-rs/mockall", "dep:mockall"]
