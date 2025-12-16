@@ -487,16 +487,20 @@
           <h4>📄 One-Pager</h4>
           <p>Quick overview of the Vara.eth approach</p>
         </a>
-        <a href="https://gear-tech.io/gear-exe/whitepaper/gear-exe" target="_blank" class="resource-card">
+        <a href="https://eth.vara.network/whitepaper/" target="_blank" class="resource-card">
           <h4>📚 Whitepaper</h4>
-          <p>Full technical documentation</p>
+          <p>High-level explanation and vision</p>
+        </a>
+        <a href="https://eth.vara.network/whitepaper/technical-docs" target="_blank" class="resource-card">
+          <h4>📖 Technical Documentation</h4>
+          <p>Detailed architecture, design, and implementation</p>
         </a>
         <a href="https://github.com/gear-foundation/one-of-us" target="_blank" class="resource-card">
           <h4>💻 Example dApp</h4>
           <p>One of Us — complete working example</p>
         </a>
-        <a href="https://wiki.gear.foundation/" target="_blank" class="resource-card">
-          <h4>📖 Vara Wiki</h4>
+        <a href="https://wiki.vara.network/docs/build/sails" target="_blank" class="resource-card">
+          <h4>🔧 Sails Documentation</h4>
           <p>Sails framework documentation</p>
         </a>
       </div>
@@ -533,7 +537,7 @@
       </p>
       <p>
         See:
-        <a href="https://wiki.gear.foundation/docs/getting-started-in-5-minutes" target="_blank"
+        <a href="https://wiki.vara.network/docs/getting-started-in-5-minutes" target="_blank"
           >Getting started in 5 minutes</a
         >
       </p>
@@ -662,7 +666,7 @@ Code ID: <span class="string">0x59810e0b451a041adff0fe2e551430186c664e2a97c80a80
 <span class="keyword">import</span> { EthereumClient } <span class="keyword">from</span> <span class="string">'@vara-eth/api'</span>;
 
 <span class="keyword">const</span> hoodi = <span class="function">defineChain</span>({
-  <span class="property">id</span>: <span class="number">560048</span>,
+  <span class="property">id</span>: <span class="number">559920</span>,
   <span class="property">name</span>: <span class="string">'Hoodi Testnet'</span>,
   <span class="property">network</span>: <span class="string">'hoodi'</span>,
   <span class="property">nativeCurrency</span>: { <span class="property">decimals</span>: <span class="number">18</span>, <span class="property">name</span>: <span class="string">'Ether'</span>, <span class="property">symbol</span>: <span class="string">'ETH'</span> },
@@ -1122,8 +1126,8 @@ forge install</code></pre>
   <span class="keyword">const</span> count = sails.services.OneOfUs.queries.Count.<span class="function">decodeResult</span>(countReply.payload);
   console.<span class="function">log</span>(<span class="string">'Builders count:'</span>, count);
 
-  <span class="comment">// Query: Who are the builders?</span>
-  <span class="keyword">const</span> buildersPayload = sails.services.OneOfUs.queries.Builders.<span class="function">encodePayload</span>();
+  <span class="comment">// Query: Who are the builders? (paginated)</span>
+  <span class="keyword">const</span> buildersPayload = sails.services.OneOfUs.queries.List.<span class="function">encodePayload</span>(<span class="number">0</span>, <span class="number">100</span>); <span class="comment">// page 0, 100 items</span>
   
   <span class="keyword">const</span> buildersReply = <span class="keyword">await</span> api.call.program.<span class="function">calculateReplyForHandle</span>(
     account.address,
@@ -1131,7 +1135,7 @@ forge install</code></pre>
     buildersPayload
   );
 
-  <span class="keyword">const</span> builders = sails.services.OneOfUs.queries.Builders.<span class="function">decodeResult</span>(buildersReply.payload);
+  <span class="keyword">const</span> builders = sails.services.OneOfUs.queries.List.<span class="function">decodeResult</span>(buildersReply.payload);
   console.<span class="function">log</span>(<span class="string">'Builders list:'</span>, builders);
 }</code></pre>
 

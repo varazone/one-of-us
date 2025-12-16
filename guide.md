@@ -19,9 +19,10 @@ By the end, you'll have a running Vara.eth program anchored to Ethereum, a clear
 | Resource | Description |
 | --- | --- |
 | [📄 One-Pager](https://gear-tech.io/gear-exe/whitepaper/vara.eth-one-pager.pdf) | Quick overview of the Vara.eth approach |
-| [📚 Whitepaper](https://gear-tech.io/gear-exe/whitepaper/gear-exe) | Full technical documentation |
+| [📚 Whitepaper](https://eth.vara.network/whitepaper/) | High-level explanation and vision |
+| [📖 Technical Documentation](https://eth.vara.network/whitepaper/technical-docs) | Detailed architecture, design, and implementation |
 | [💻 Example dApp](https://github.com/gear-foundation/one-of-us) | One of Us — complete working example |
-| [📖 Vara Wiki](https://wiki.gear.foundation/) | Sails framework documentation |
+| [🔧 Sails Documentation](https://wiki.vara.network/docs/build/sails) | Sails framework documentation |
 
 ## Building the Program
 
@@ -35,7 +36,7 @@ The program is written in Rust using the **Sails framework**. A useful thing to 
 
 Make sure your environment matches the standard Gear/Vara prerequisites: recent Rust toolchain, WASM build target, and basic system packages.
 
-See: [Getting started in 5 minutes](https://wiki.gear.foundation/docs/getting-started-in-5-minutes)
+See: [Getting started in 5 minutes](https://wiki.vara.network/docs/getting-started-in-5-minutes)
 
 ### Build
 
@@ -129,7 +130,7 @@ import { privateKeyToAccount } from 'viem/accounts';
 import { EthereumClient } from '@vara-eth/api';
 
 const hoodi = defineChain({
-  id: 560048,
+  id: 559920,
   name: 'Hoodi Testnet',
   network: 'hoodi',
   nativeCurrency: { decimals: 18, name: 'Ether', symbol: 'ETH' },
@@ -424,12 +425,12 @@ async function main() {
   const count = sails.services.OneOfUs.queries.Count.decodeResult(countReply.payload);
   console.log('Builders count:', count);
 
-  // Query: Who are the builders?
-  const buildersPayload = sails.services.OneOfUs.queries.Builders.encodePayload();
+  // Query: Who are the builders? (paginated)
+  const buildersPayload = sails.services.OneOfUs.queries.List.encodePayload(0, 100); // page 0, 100 items
 
   const buildersReply = await api.call.program.calculateReplyForHandle(account.address, PROGRAM_ID, buildersPayload);
 
-  const builders = sails.services.OneOfUs.queries.Builders.decodeResult(buildersReply.payload);
+  const builders = sails.services.OneOfUs.queries.List.decodeResult(buildersReply.payload);
   console.log('Builders list:', builders);
 }
 ```

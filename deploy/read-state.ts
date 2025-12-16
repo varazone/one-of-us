@@ -96,9 +96,9 @@ async function main() {
   );
   console.log('Builders count:', count);
 
-  // Query: Who are the builders?
+  // Query: Who are the builders? (paginated)
   const buildersPayload =
-    sails.services.OneOfUs.queries.Builders.encodePayload();
+    sails.services.OneOfUs.queries.List.encodePayload(0, 100); // page 0, 100 items
   console.log('\nQuerying builders list...');
 
   const buildersReply = await api.call.program.calculateReplyForHandle(
@@ -107,7 +107,7 @@ async function main() {
     buildersPayload
   );
 
-  const builders = sails.services.OneOfUs.queries.Builders.decodeResult(
+  const builders = sails.services.OneOfUs.queries.List.decodeResult(
     buildersReply.payload
   );
   console.log('Builders list:', builders);
