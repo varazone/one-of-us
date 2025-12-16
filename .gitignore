@@ -28,5 +28,4 @@ deploy/.env.local
 # Foundry
 out/
 cache/
-lib/
 broadcast/
