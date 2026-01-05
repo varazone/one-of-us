@@ -22,9 +22,9 @@ declare global {
 }
 
 /**
- * Выбираем правильный провайдер.
- * Если есть несколько (window.ethereum.providers),
- * берём MetaMask по флагу isMetaMask.
+ * Selects the correct provider.
+ * If there are multiple (window.ethereum.providers),
+ * choose MetaMask by the isMetaMask flag.
  */
 function pickEthereumProvider(): (EIP1193Provider & any) | null {
   const eth = window.ethereum;
@@ -34,7 +34,7 @@ function pickEthereumProvider(): (EIP1193Provider & any) | null {
   if (providers && providers.length > 0) {
     const mm = providers.find((p) => p?.isMetaMask);
     if (mm) return mm;
-    // если MetaMask нет, вернём первый чтобы хотя бы не падать
+    // if MetaMask is not present, return the first one to at least not fail
     return providers[0];
   }
 
@@ -110,7 +110,7 @@ export function useWallet() {
       } catch (e: any) {
         if (!mounted) return;
 
-        setError(e?.message || 'Provider error on eth_accounts. Возможно, window.ethereum не MetaMask.');
+        setError(e?.message || 'Provider error on eth_accounts. Possibly, window.ethereum is not MetaMask.');
       }
     };
 
