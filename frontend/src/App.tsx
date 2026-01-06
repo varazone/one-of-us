@@ -95,6 +95,12 @@ function App() {
             <span className="of">OF</span>
             <span className="us">US</span>
           </h1>
+          <p className="description">
+            A simple Ethereum-native application demonstrating fast UX through instant execution on{' '}
+            <a href="https://vara.network" target="_blank" rel="noopener noreferrer">Vara.eth</a>, with settlement and
+            finalization on Ethereum. Vara.eth enables much more powerful and scalable applications —{' '}
+            <a href="https://start.vara.network/" target="_blank" rel="noopener noreferrer">learn more</a>.
+          </p>
         </div>
 
         <Stats memberCount={memberCount} />

@@ -54,8 +54,29 @@
   gap: 15px;
   font-size: 4rem;
   font-weight: 900;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   position: relative;
+}
+
+.description {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #a0aec0;
+  text-align: center;
+}
+
+.description a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.description a:hover {
+  color: #f093fb;
+  text-shadow: 0 0 8px rgba(240, 147, 251, 0.5);
 }
 
 .one {
