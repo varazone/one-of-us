@@ -87,7 +87,7 @@ export const JoinSection = ({
                 ) : (
                   <>
                     <span className="button-icon">🤝</span>
-                    BE PART OF US!
+                    JOIN
                   </>
                 )}
               </button>
